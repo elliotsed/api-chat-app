@@ -7,55 +7,107 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
-## About Laravel
+## 🚀 Installation
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+### Cloner le projet :
+git clone https://github.com/elliotsed/api-chat-app
+cd api-chat-app
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### Installer les dépendances
+composer install
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### Configurer la base de données
+Vérifier que le fichier .env est présent (normalement fourni dans le repo) et modifier les valeurs de la base de données et autres configurations si nécessaire :
 
-## Learning Laravel
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=api_chat_app
+DB_USERNAME=votre_username
+DB_PASSWORD=votre_password
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### Exécuter les migrations
+php artisan migrate
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+### Lancer le serveur
+php artisan serve
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## API prêt à tester avec Postman
+Toutes les routes (sauf register et login) nécessitent un token Sanctum. Ajouter le token dans le header de la requête :
+Authorization: Bearer {token}
 
-## Laravel Sponsors
+### 🔐 Authentification
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+#### register
+POST /api/register
 
-### Premium Partners
+Body :
+{
+  "name": "John",
+  "email": "john@example.com",
+  "password": "John@123"
+}
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+#### login
+POST /api/login
 
-## Contributing
+Body :
+{
+  "email": "john@example.com",
+  "password": "John@123"
+}
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Réponse : contient un token à utiliser dans les prochaines requêtes.
 
-## Code of Conduct
+#### logout
+POST /api/logout
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Authorization: Bearer {token}
 
-## Security Vulnerabilities
+### 💬 Discussions
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+#### Créer une discussion
+POST /api/discussions
 
-## License
+Body :
+{
+  "user_ids": [id]
+}
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Authorization: Bearer {token}
+
+(où id est l’ID d’un utilisateur avec qui tu veux créer la discussion)
+
+#### Lister les discussions de l’utilisateur connecté
+GET /api/discussions
+
+Authorization: Bearer {token}
+
+### 📨 Messages
+
+#### Envoyer un message
+POST /api/discussions/{id}/messages
+
+Body : 
+{
+  "content": "Hello"
+}
+
+Authorization: Bearer {token}
+
+(où id est l’ID de la discussion)
+
+
+
+#### Récupérer les messages d'une discussion
+GET /api/discussions/{id}/messages
+
+Authorization: Bearer {token}
+
+(où id est l’ID de la discussion)
+
+
+
+
+
+

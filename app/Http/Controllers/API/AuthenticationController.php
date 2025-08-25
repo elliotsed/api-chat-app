@@ -111,30 +111,6 @@ class AuthenticationController extends Controller
         }
     }
 
-    /**
-     * Get list of users (paginated) — protected route.
-     */
-    public function userInfo()
-    {
-        try {
-            $users = User::latest()->paginate(10);
-
-            return response()->json([
-                'response_code'  => 200,
-                'status'         => 'success',
-                'message'        => 'Fetched user list successfully',
-                'data_user_list' => $users,
-            ]);
-        } catch (\Exception $e) {
-            Log::error('User List Error: ' . $e->getMessage());
-
-            return response()->json([
-                'response_code' => 500,
-                'status'        => 'error',
-                'message'       => 'Failed to fetch user list',
-            ], 500);
-        }
-    }
 
     /**
      * Logout user and revoke tokens — protected route.
